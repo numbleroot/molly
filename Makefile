@@ -33,5 +33,5 @@ lib/z3/build/libz3.dylib:
 
 # SBT command for running only the fast unit tests and excluding the slower
 # end-to-end tests (which have been tagged using ScalaTest's `Slow` tag):
-fast-test: deps
+fast-test:
 	sbt "testOnly *Suite -- -l org.scalatest.tags.Slow"
