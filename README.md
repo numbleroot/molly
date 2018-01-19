@@ -4,7 +4,7 @@
 
 Molly is written in Scala and compiled using SBT.  Molly depends on the [C4 Overlog runtime](https://github.com/bloom-lang/c4), [Z3 theorem prover](https://z3.codeplex.com/), and the [Optimus LP solver](https://github.com/vagm/Optimus). Molly will install local copies of C4 and Z3 automatically. Note that C4 requires CMake version 2.8 or later. 
 
-The top-level `Makefile` should be handle a one-click build on OS X.
+The top-level `Makefile` should handle a one-click build on OS X.
 
 ### Linux
 
@@ -113,4 +113,3 @@ There is a record (X, Pl) in post if some node X has a payload Pl in its log, an
 Molly is described in a [SIGMOD paper](http://people.ucsc.edu/~palvaro/molly.pdf).
 
 Dedalus is described [here](http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-173.html).
-

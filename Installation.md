@@ -8,7 +8,7 @@ Due to system updates on Mac with El Capitan, setting up Molly involves slightly
 
 4.  Run make in the highest level directory of the cloned repository
 
-5.  c4 nd z3 libraries now build
+5.  c4 and z3 libraries now build
 
 6.  Since environment variables are disabled for system security reasons, create symlinks in the working directory, like so:
 

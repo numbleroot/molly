@@ -19,3 +19,6 @@ project/plugins/project/
 # IntelliJ-specific
 .idea
 *.iml
+
+# Do not track untracked content in submodules
+lib/
