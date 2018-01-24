@@ -118,9 +118,9 @@ object SyncFTChecker extends LazyLogging {
       }
 
       val curTimestamp: Long = System.currentTimeMillis / 1000
-      val inputProgs = config.inputPrograms.addString(new StringBuilder(), "_").toString().replace('.', '_')
+      val inputProgs = config.inputPrograms.map(prog => prog.getName()).addString(new StringBuilder(), "_").toString().replace('.', '_')
       val nodesString = config.nodes.mkString("_")
-      val outputDir = s"output/${curTimestamp}_${inputProgs}_${config.eot}_${config.eff}_${config.crashes}_${nodesString}"
+      val outputDir = s"output/${curTimestamp}_${inputProgs}_t${config.eot}_f${config.eff}_c${config.crashes}_N${nodesString}"
 
       // Write specified analysis output to
       // directory specific to this specification.
