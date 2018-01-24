@@ -20,5 +20,7 @@ project/plugins/project/
 .idea
 *.iml
 
-# Do not track untracked content in submodules
+# Do not track temporary and external folders
 lib/
+out/
+output/

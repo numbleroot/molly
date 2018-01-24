@@ -27,7 +27,7 @@ import DedalusType._
  */
 object DedalusTyper {
 
-  private type ColRef = (String, Int)  // (tableName, columnNumber) pairs
+  private type ColRef = (String, Int) // (tableName, columnNumber) pairs
 
   private def inferTypeOfAtom(atom: Atom): DedalusType = {
     atom match {
@@ -56,13 +56,13 @@ object DedalusTyper {
    * @return a copy of the program with its `tables` field filled in.
    */
   def inferTypes(program: Program): Program = {
-    require (program.tables.isEmpty, "Program is already typed!")
+    require(program.tables.isEmpty, "Program is already typed!")
     val allPredicates = program.facts ++ program.rules.map(_.head) ++
       program.rules.flatMap(_.bodyPredicates)
     val mostColRefs = for (
       pred <- allPredicates;
       (col, colNum) <- pred.cols.zipWithIndex
-    ) yield (pred.tableName, colNum) 
+    ) yield (pred.tableName, colNum)
 
     val allColRefs = mostColRefs ++ Seq(
       ("crash", 0),
@@ -117,14 +117,12 @@ object DedalusTyper {
       )
       val firstColumnTypeIsLocation = for (
         pred <- allPredicates;
-        (col, colNum) <- pred.cols.zipWithIndex
-        if colNum == 0
+        (col, colNum) <- pred.cols.zipWithIndex if colNum == 0
       ) yield (colRefToMinColRef.find((pred.tableName, colNum)), (col, LOCATION))
       val inferredFromPredicates = for (
         pred <- allPredicates;
         (col, colNum) <- pred.cols.zipWithIndex;
-        inferredType = inferTypeOfAtom(col)
-        if inferredType != UNKNOWN
+        inferredType = inferTypeOfAtom(col) if inferredType != UNKNOWN
       ) yield (colRefToMinColRef.find((pred.tableName, colNum)), (col, inferredType))
       val evidence = inferredFromPredicates ++ metaEDBTypes ++ firstColumnTypeIsLocation
       evidence.groupBy(_._1).mapValues(_.map(_._2).toSet)
@@ -139,7 +137,7 @@ object DedalusTyper {
     } + ("clock" -> 4) + ("crash" -> 4)
 
     // Assign types to each group of columns:
-    val tableNames = allPredicates.map(_.tableName).toSet  ++ Set("crash", "clock")
+    val tableNames = allPredicates.map(_.tableName).toSet ++ Set("crash", "clock")
     val tables = tableNames.map { tableName =>
       val numCols = numColsInTable(tableName)
       val colTypes = (0 to numCols - 1).map { colNum =>
@@ -152,14 +150,15 @@ object DedalusTyper {
           val headPosition =
             Positions.getStart(allPredicates.filter(_.tableName == tableName).head.cols(colNum))
           s"Conflicting evidence for type of column $colNum of $tableName:\n\n" +
-          headPosition.longString + "\n---------------------------------------------\n" +
-          evidenceByType.map { case (inferredType, evidence) =>
-            val evidenceLocations = for ((atom, _) <- evidence) yield {
-              if (atom != null) Positions.getStart(atom).longString
-              else "unification with meta EDB column"
-            }
-            s"Evidence for type $inferredType:\n\n" +  evidenceLocations.mkString("\n")
-          }.mkString("\n---------------------------------------------\n")
+            headPosition.longString + "\n---------------------------------------------\n" +
+            evidenceByType.map {
+              case (inferredType, evidence) =>
+                val evidenceLocations = for ((atom, _) <- evidence) yield {
+                  if (atom != null) Positions.getStart(atom).longString
+                  else "unification with meta EDB column"
+                }
+                s"Evidence for type $inferredType:\n\n" + evidenceLocations.mkString("\n")
+            }.mkString("\n---------------------------------------------\n")
         })
         types.head._2
       }

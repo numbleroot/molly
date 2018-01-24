@@ -4,8 +4,9 @@ package edu.berkeley.cs.boom.molly
 // at ALL timesteps.
 case class UltimateModel(tables: Map[String, List[List[String]]]) {
   override def toString: String = {
-    tables.map { case (name, values) =>
-      name + ":\n" + values.map(_.mkString(",")).mkString("\n")
+    tables.map {
+      case (name, values) =>
+        name + ":\n" + values.map(_.mkString(",")).mkString("\n")
     }.mkString("\n\n")
   }
 

@@ -1,8 +1,8 @@
 package edu.berkeley.cs.boom.molly
 
 import org.apache.commons.math3.util.ArithmeticUtils
-import edu.berkeley.cs.boom.molly.ast.{Program, IntLiteral, StringLiteral, Predicate}
-import edu.berkeley.cs.boom.molly.derivations.{MessageLoss, CrashFailure}
+import edu.berkeley.cs.boom.molly.ast.{ Program, IntLiteral, StringLiteral, Predicate }
+import edu.berkeley.cs.boom.molly.derivations.{ MessageLoss, CrashFailure }
 
 case class FailureSpec(
   eot: Int,
@@ -35,8 +35,7 @@ case class FailureSpec(
     val temporalFacts = for (
       from <- nodes;
       to <- nodes;
-      t <- 1 to eot
-      if !crashes.exists(c => c.node == from && c.time <= t)  // if the sender didn't crash
+      t <- 1 to eot if !crashes.exists(c => c.node == from && c.time <= t) // if the sender didn't crash
     ) yield {
       val messageLost = omissions.exists(o => o.from == from && o.to == to && o.time == t)
       val deliveryTime = if (from != to && messageLost) NEVER else t + 1
@@ -55,7 +54,6 @@ case class FailureSpec(
     program.copy(facts = program.facts ++ generateClockFacts)
   }
 }
-
 
 object FailureSpec {
   /**
