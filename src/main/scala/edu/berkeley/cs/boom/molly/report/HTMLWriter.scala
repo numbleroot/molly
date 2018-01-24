@@ -27,8 +27,8 @@ object HTMLWriter {
   }
 
   private def writeGraphviz(dot: String, outputDirectory: File, filename: String) = {
-    val dotFile = new File(outputDirectory, s"$filename.dot")
-    val svgFile = new File(outputDirectory, s"$filename.svg")
+    val dotFile = new File(outputDirectory, s"${filename}.dot")
+    val svgFile = new File(outputDirectory, s"${filename}.svg")
     FileUtils.write(dotFile, dot)
     new Runnable() {
       def run() {
@@ -38,8 +38,7 @@ object HTMLWriter {
     }
   }
 
-  def write(outputDirectory: File, originalPrograms: List[File], runs: EphemeralStream[Run],
-    generateProvenanceDiagrams: Boolean, disableDotRendering: Boolean = false) = {
+  def write(outputDirectory: File, originalPrograms: List[File], runs: EphemeralStream[Run], generateProvenanceDiagrams: Boolean, disableDotRendering: Boolean = false) = {
 
     outputDirectory.mkdirs()
     require(outputDirectory.isDirectory)
@@ -47,6 +46,7 @@ object HTMLWriter {
     copyTemplateFiles(outputDirectory)
 
     val runsFile = new PrintWriter(FileUtils.openOutputStream(new File(outputDirectory, "runs.json")))
+
     // Unfortunately, Argonaut doesn't seem to support streaming JSON writing, hence this code:
     var first: Boolean = true
     runsFile.print("[\n")

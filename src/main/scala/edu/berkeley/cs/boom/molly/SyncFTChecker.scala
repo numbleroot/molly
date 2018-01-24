@@ -106,6 +106,8 @@ object SyncFTChecker extends LazyLogging {
 
     parser.parse(args, Config()) map { config =>
 
+      println(config)
+
       // Kind of a hack to tee an ephemeral stream
       var firstCounterExample: FailureSpec = null
       val results = check(config, metrics).map {
@@ -120,11 +122,12 @@ object SyncFTChecker extends LazyLogging {
       val nodesString = config.nodes.mkString("_")
       val outputDir = s"output/${curTimestamp}_${inputProgs}_${config.eot}_${config.eff}_${config.crashes}_${nodesString}"
 
-      // TODO: name the output directory after the input filename and failure spec.
+      // Write specified analysis output to
+      // directory specific to this specification.
       HTMLWriter.write(new File(outputDir), Nil, results, config.generateProvenanceDiagrams, config.disableDotRendering)
 
       println("-" * 80)
-      metricsReporter.report() // This appears after the HTML writing due to laziness
+      metricsReporter.report()
       println("-" * 80)
 
       firstCounterExample match {
